@@ -21,41 +21,39 @@ function z = function2(I,D,X,Y)
     z2=zeros(indexX,indexY);
     center_x=X;
     center_y=Y;
-    iX=center_x;
-    flag1=1;
+%     iX=center_x;
+%     flag1=1;
     
-    while ((iX<=indexX-1)&&(iX>=2))
-        iY=center_y;
-        flag2=1;
-        while ((iY<=indexY-1)&&(iY>=2))
-            n1=ans_n{iX,iY};
-            n2=ans_n{iX,iY+flag2};
-            n=n1+n2;
-            n=[-n(2);n(1);0];
-            n=n./norm(n);
-            z1(iX,iY+flag2)=z1(iX,iY)+[flag2,0,0]*n;
-            iY=iY+flag2;
-            if (iY==indexY)
-                flag2=-1;
-                iY=center_y;
-            end
-        end
-        n1=ans_n{iX,center_y};
-        n2=ans_n{iX+flag1,center_y};
-        n=n1+n2;
-        n=[n(3);0;-n(1)];
-        n=n./norm(n);
-        z1(iX+flag1,center_y)=z1(iX,center_y)+[flag1,0,0]*n;
-        iX=iX+flag1;
-        if (iX==indexX)
-            flag1=-1;
-            iX=center_x;
-        end
-    end
+%     while ((iX<=indexX-1)&&(iX>=2))%X ÊÇ³¤ £¬YÊÇ¿í
+%         iY=center_y;
+%         flag2=1;
+%         while ((iY<=indexY-1)&&(iY>=2))
+%             n1=ans_n{iX,iY};
+%             n2=ans_n{iX,iY+flag2}; 
+%             t=[0,1;2,1]\[-n1(2)/n1(1);-n2(2)/n2(1)];
+%             z1(iX,iY+flag2)=z1(iX,iY)+flag2*[1,1]*t;
+%             iY=iY+flag2;
+%             if (iY==indexY)
+%                 flag2=-1;
+%                 iY=center_y;
+%             end
+%         end
+%         n1=ans_n{iX,center_y};
+%         n2=ans_n{iX+flag1,center_y};
+%         t=[0,1;2,1]\[-n1(3)/n1(1);-n2(3)/n2(1)];
+%         z1(iX+flag1,center_y)=z1(iX,center_y)-flag1*[1,1]*t;
+%         iX=iX+flag1;
+%         if (iX==indexX)
+%             flag1=-1;
+%             iX=center_x;
+%         end
+%     end
     
-    MAXofz=max(max(z1));
-    MINofz=min(min(z1));
-    z1=(z1-MINofz)./(MAXofz-MINofz);
+%     z1(1,:)=z1(2,:);
+%     z1(indexX,:)=z1(indexX-1,:);
+% %     MAXofz=max(max(z1));
+% %     MINofz=min(min(z1));
+% %     z1=(z1-MINofz)./(MAXofz-MINofz);
     
     iY=center_y;
     flag2=1;
@@ -65,35 +63,38 @@ function z = function2(I,D,X,Y)
         while ((iX<=indexX-1)&&(iX>=2))
             n1=ans_n{iX,iY};
             n2=ans_n{iX+flag1,iY};
-            n=n1+n2;
-            n=[n(3);0;-n(1)];
-            n=n./norm(n);
-            z2(iX+flag1,iY)=z2(iX,iY)+[flag1,0,0]*n;
+            t=[0,1;2,1]\[-n1(3)/n1(1);-n2(3)/n2(1)];
+            z2(iX+flag1,iY)=0-[1,1]*t;%!!!!!!!!!!!!!!!!
             iX=iX+flag1;
             if (iX==indexX)
                 flag1=-1;
-                iX=center_x;
+                iX=center_x+1;
             end
         end
         n1=ans_n{center_x,iY};
         n2=ans_n{center_x,iY+flag2};
-        n=n1+n2;
-        n=[-n(2);n(1);0];
-        n=n./norm(n);
-        z2(center_x,iY+flag2)=z2(center_x,iY)+[flag2,0,0]*n;
+        t=[0,1;2,1]\[-n1(2)/n1(1);-n2(2)/n2(1)];
+        z2(center_x,iY+flag2)=0+flag2*[1,1]*t;
         iY=iY+flag2;
         if (iY==indexY)
             flag2=-1;
-            iY=center_y;
+            iY=center_y+1;
         end
     end
+    z2(:,1)=z2(:,3);
+    z2(:,2)=z2(:,3);
+    z2(:,indexY)=z2(:,indexY-2);
+    z2(:,indexY-1)=z2(:,indexY-2);
+%     MAXofz=max(max(z2));
+%     MINofz=min(min(z2));
+%     z2=(z2-MINofz)./(MAXofz-MINofz);
     
-    MAXofz=max(max(z2));
-    MINofz=min(min(z2));
-    z2=(z2-MINofz)./(MAXofz-MINofz);
+    z=z1+0.5*(z2-mean(mean(z2)));
+    z=z2;
+    MAXofz=max(max(z));
+    MINofz=min(min(z));
+    z=(z-MINofz)./(MAXofz-MINofz);
     
-    z=(z1+z2).*0.5;
-    % z=z1;
     
     
     end

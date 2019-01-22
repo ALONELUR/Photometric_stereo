@@ -31,8 +31,8 @@ I(:,:,2)=top;
 I(:,:,3)=left;
 I(:,:,4)=bottom;
 
-z=zeros(indexX,indexY);
-z=z+function1(I,D,round(0.5*indexX),round(0.5*indexY));
+
+z=function2(I,D,round(0.5*indexX),round(0.5*indexY));
 % z=z+function1(I,D,round(0.25*indexX),round(0.25*indexY));
 % z=z+function1(I,D,round(0.25*indexX),round(0.75*indexY));
 % z=z+function1(I,D,round(0.75*indexX),round(0.25*indexY));
@@ -96,9 +96,10 @@ z=z+function1(I,D,round(0.5*indexX),round(0.5*indexY));
 % end
 % indexX=indexX-1;
 % z=z(1:indexX,1:indexY);
+
+            
 [X,Y]=meshgrid(1:indexY,1:indexX);
+figure(1)
 mesh(X,Y,z);
 figure(2)
 imshow(z)
-figure(3)
-imshow(z2)
