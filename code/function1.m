@@ -24,6 +24,7 @@ center_y=Y;
 iX=center_x;
 flag1=1;
 
+%这种算法保留了高频信号
 while ((iX<=indexX-1)&&(iX>=2))
     iY=center_y;
     flag2=1;
