@@ -1,4 +1,4 @@
-function z = function2(I,D,X,Y)
+function [z1,z2] = function2(I,D,X,Y)
     %myFun - Description
     %
     % Syntax: z = func1(I,D)
@@ -21,36 +21,37 @@ function z = function2(I,D,X,Y)
     z2=zeros(indexX,indexY);
     center_x=X;
     center_y=Y;
-%     iX=center_x;
-%     flag1=1;
+
+    iX=center_x;
+    flag1=1;
     
-%     while ((iX<=indexX-1)&&(iX>=2))%X 是长 ，Y是宽
-%         iY=center_y;
-%         flag2=1;
-%         while ((iY<=indexY-1)&&(iY>=2))
-%             n1=ans_n{iX,iY};
-%             n2=ans_n{iX,iY+flag2}; 
-%             t=[0,1;2,1]\[-n1(2)/n1(1);-n2(2)/n2(1)];
-%             z1(iX,iY+flag2)=z1(iX,iY)+flag2*[1,1]*t;
-%             iY=iY+flag2;
-%             if (iY==indexY)
-%                 flag2=-1;
-%                 iY=center_y;
-%             end
-%         end
-%         n1=ans_n{iX,center_y};
-%         n2=ans_n{iX+flag1,center_y};
-%         t=[0,1;2,1]\[-n1(3)/n1(1);-n2(3)/n2(1)];
-%         z1(iX+flag1,center_y)=z1(iX,center_y)-flag1*[1,1]*t;
-%         iX=iX+flag1;
-%         if (iX==indexX)
-%             flag1=-1;
-%             iX=center_x;
-%         end
-%     end
+    while ((iX<=indexX-1)&&(iX>=2))%X 是长 ，Y是宽
+        iY=center_y;
+        flag2=1;
+        while ((iY<=indexY-1)&&(iY>=2))
+            n1=ans_n{iX,iY};
+            n2=ans_n{iX,iY+flag2}; 
+            t=[0,1;2,1]\[-n1(2)/n1(1);-n2(2)/n2(1)];
+            z1(iX,iY+flag2)=-[1,1]*t;
+            iY=iY+flag2;
+            if (iY==indexY)
+                flag2=-1;
+                iY=center_y+1;
+            end
+        end
+        n1=ans_n{iX,center_y};
+        n2=ans_n{iX+flag1,center_y};
+        t=[0,1;2,1]\[-n1(3)/n1(1);-n2(3)/n2(1)];
+        z1(iX+flag1,center_y)=flag1*[1,1]*t;%!!!!!!!!!!!!!!!!
+        iX=iX+flag1;
+        if (iX==indexX)
+            flag1=-1;
+            iX=center_x+1;
+        end
+    end
     
-%     z1(1,:)=z1(2,:);
-%     z1(indexX,:)=z1(indexX-1,:);
+    z1(1,:)=z1(2,:);
+    z1(indexX,:)=z1(indexX-1,:);
 % %     MAXofz=max(max(z1));
 % %     MINofz=min(min(z1));
 % %     z1=(z1-MINofz)./(MAXofz-MINofz);
@@ -89,11 +90,14 @@ function z = function2(I,D,X,Y)
 %     MINofz=min(min(z2));
 %     z2=(z2-MINofz)./(MAXofz-MINofz);
     
-    z=z1+0.5*(z2-mean(mean(z2)));
-    z=z2;
-    MAXofz=max(max(z));
-    MINofz=min(min(z));
-    z=(z-MINofz)./(MAXofz-MINofz);
+%     z=z1+0.5*(z2-mean(mean(z2)));
+%     MAXo/fz=max(max(z1));
+%     MINofz=min(min(z1));
+%     z1=(z1-MINofz)./(MAXofz-MINofz);
+%     
+%     MAXofz=max(max(z2));
+%     MINofz=min(min(z2));
+%     z2=(z2-MINofz)./(MAXofz-MINofz);
     
     
     
