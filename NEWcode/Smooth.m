@@ -9,7 +9,7 @@ function [p1,q1] = Smooth(p,q,lambda,I,reflectivity,S)
     core = [1,4,1;4,0,4;1,4,1] ./ 20;
     p0 = p;
     q0 = q;
-    while iLoop < 100
+    while iLoop < 500
         p0Mean = conv2(p0,core, 'same');
         q0Mean = conv2(q0,core, 'same');
         I0 = Rs(p0Mean,q0Mean,S,reflectivity);
@@ -22,7 +22,7 @@ function [p1,q1] = Smooth(p,q,lambda,I,reflectivity,S)
         end
 
         change = p1 - p0;
-        if sum(sum(change)) > 10
+        if abs(sum(sum(change))) > 0.1
             p0 = p1;
             q0 = q1;
         else

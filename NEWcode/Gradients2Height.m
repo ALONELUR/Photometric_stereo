@@ -1,4 +1,4 @@
-function height = Gradients2Height(dx,dy)
+function height = Gradients2Height(dx,dy,varargin)
 %Gradients2Height - Description
 %
 % Syntax: height = Gradients2Height(dx,dy,I,S)
@@ -10,15 +10,20 @@ function height = Gradients2Height(dx,dy)
 
     corefordy = [0,0,0;-1,0,1;0,0,0];
     corefordx = [0,-1,0;0,0,0;0,1,0];
-    %=============<Gradients centre>================================
-    dxEnergy = dx.^2;
-    dyEnergy = dy.^2;
+    if size(varargin,2) == 0
+        %=============<Gradients centre>================================
+        dyEnergy = dy.^2;
+        dxEnergy = dx.^2;
+        [yMesh,xMesh] = meshgrid(1:1:yIndex,1:1:xIndex);
+        
+        xCentre = fix(sum(sum(dxEnergy .* xMesh)) / sum(sum(dxEnergy)));
+        yCentre = fix(sum(sum(dyEnergy .* yMesh)) / sum(sum(dyEnergy)));
+        %=============<Gradients centre_END>============================
+    elseif size(varargin,2) ~= 0
+        xCentre = varargin{1};
+        yCentre = varargin{2};
+    end
 
-    [yMesh,xMesh] = meshgrid(1:1:yIndex,1:1:xIndex);
-
-    xCentre = fix(sum(sum(dxEnergy .* xMesh)) / sum(sum(dxEnergy)));
-    yCentre = fix(sum(sum(dyEnergy .* yMesh)) / sum(sum(dyEnergy)));
-    %=============<Gradients centre_END>============================
 
     maskHeight = (ones(xIndex, yIndex));
     maskHeight(xCentre,yCentre) = false;
